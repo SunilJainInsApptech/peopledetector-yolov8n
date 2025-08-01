@@ -1,0 +1,13 @@
+{
+  "module_name": "yolov8n-pose",
+  "namespace": "rig-guardian",
+  "language": "python",
+  "resource_type": "service",
+  "resource_subtype": "vision",
+  "model_name": "yolov8n-pose",
+  "enable_cloud_build": true,
+  "initialize_git": false,
+  "generator_version": "0.1.0",
+  "generated_on": "2025-07-17T18:38:15.076435844Z",
+  "module_readme_link": "README.md"
+}

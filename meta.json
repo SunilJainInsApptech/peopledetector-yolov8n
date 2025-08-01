@@ -1,0 +1,30 @@
+{
+  "$schema": "https://dl.viam.dev/module.schema.json",
+  "module_id": "rig-guardian:yolov8n-pose",
+  "visibility": "private",
+  "url": "",
+  "description": "Modular vision service: yolov8n-pose",
+  "models": [
+    {
+      "api": "rdk:service:vision",
+      "model": "rig-guardian:yolov8n-pose:yolov8n-pose",
+      "short_description": "Provide a short (100 characters or less) description of this model here",
+      "markdown_link": "README.md#model-rig-guardianyolov8n-poseyolov8n-pose"
+    }
+  ],
+  "applications": null,
+  "markdown_link": "README.md",
+  "entrypoint": "reload.sh",
+  "first_run": "",
+  "build": {
+    "build": "rm -f module.tar.gz && tar czf module.tar.gz requirements.txt src/*.py src/models/*.py meta.json setup.sh reload.sh",
+    "setup": "./setup.sh",
+    "path": "module.tar.gz",
+    "arch": [
+      "linux/amd64",
+      "linux/arm64",
+      "darwin/arm64",
+      "windows/amd64"
+    ]
+  }
+}

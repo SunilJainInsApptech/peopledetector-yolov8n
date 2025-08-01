@@ -1,0 +1,99 @@
+{
+  "agent": {
+    "advanced_settings": {
+      "viam_server_env": {
+        "TWILIO_ACCOUNT_SID": "REPLACE_WITH_YOUR_TWILIO_ACCOUNT_SID_FROM_CONSOLE",
+        "TWILIO_AUTH_TOKEN": "REPLACE_WITH_YOUR_TWILIO_AUTH_TOKEN_FROM_CONSOLE",
+        "TWILIO_FROM_PHONE": "+1234567890",
+        "TWILIO_TO_PHONES": "+1987654321,+1555123456",
+        "TWILIO_WEBHOOK_URL": "https://your-server.com/fall-images",
+        "TWILIO_NOTIFY_SERVICE_SID": "REPLACE_WITH_TWILIO_NOTIFY_SERVICE_SID",
+        "RIGGUARDIAN_WEBHOOK_URL": "https://rigguardian.com/api/fall-alert"
+      }
+    }
+  },
+  "modules": [
+    {
+      "name": "yolov8n-pose",
+      "type": "registry",
+      "module_id": "rig-guardian:yolov8n-pose:yolov8n-pose",
+      "version": "latest"
+    }
+  ],
+  "services": [
+    {
+      "name": "lobby-center-north-vision",
+      "type": "vision",
+      "namespace": "rdk",
+      "model": "rig-guardian:yolov8n-pose:yolov8n-pose",
+      "attributes": {
+        "model_location": "/home/sunil/yolov8n-pose.pt",
+        "pose_classifier_path": "/home/sunil/yolov8n-pose/pose_classifier.joblib",
+        
+        "_comment_security": "🔒 Twilio credentials are now loaded from environment variables via agent.advanced_settings.viam_server_env",
+        "_comment_usage": "Set use_env_for_twilio=true to enable environment variable loading (defaults to true if TWILIO_ACCOUNT_SID env var exists)",
+        "use_env_for_twilio": true,
+        
+        "_comment_alert_settings": "Fall Detection Alert Settings - these are non-sensitive so can remain in config",
+        "fall_confidence_threshold": 0.7,
+        "alert_cooldown_seconds": 300,
+        
+        "_comment_data_capture": "Data Manager reference for doCommand data capture",
+        "data_manager": "data_manager-1"
+      },
+      "depends_on": ["Lobby_Center_North"]
+    },
+    {
+      "name": "cpw-awning-vision",
+      "type": "vision",
+      "namespace": "rdk",
+      "model": "rig-guardian:yolov8n-pose:yolov8n-pose",
+      "attributes": {
+        "model_location": "/home/sunil/yolov8n-pose.pt",
+        "pose_classifier_path": "/home/sunil/yolov8n-pose/pose_classifier.joblib",
+        
+        "use_env_for_twilio": true,
+        
+        "fall_confidence_threshold": 0.7,
+        "alert_cooldown_seconds": 300,
+        
+        "_comment_data_capture": "Data Manager reference for doCommand data capture",
+        "data_manager": "data_manager-1"
+      },
+      "depends_on": ["CPW_Awning_N_Facing"]
+    },
+    {
+      "name": "data_manager-1",
+      "type": "data_manager",
+      "namespace": "rdk",
+      "model": "rdk:builtin:builtin",
+      "attributes": {
+        "capture_dir": "/home/sunil/Documents/viam_captured_images",
+        "capture_disabled": false,
+        "tags": [],
+        "additional_sync_paths": [],
+        "sync_interval_mins": 1
+      }
+    }
+  ],
+  "components": [
+    {
+      "name": "Lobby_Center_North",
+      "type": "camera", 
+      "namespace": "rdk",
+      "model": "webcam",
+      "attributes": {
+        "video_path": "0"
+      }
+    },
+    {
+      "name": "CPW_Awning_N_Facing",
+      "type": "camera", 
+      "namespace": "rdk",
+      "model": "webcam",
+      "attributes": {
+        "video_path": "1"
+      }
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+{
+  "agent": {
+    "advanced_settings": {
+      "viam_server_env": {
+        "TWILIO_ACCOUNT_SID": "REPLACE_WITH_YOUR_ACTUAL_TWILIO_ACCOUNT_SID",
+        "TWILIO_AUTH_TOKEN": "REPLACE_WITH_YOUR_ACTUAL_TWILIO_AUTH_TOKEN",
+        "TWILIO_FROM_PHONE": "REPLACE_WITH_YOUR_TWILIO_PHONE_NUMBER",
+        "TWILIO_TO_PHONES": "REPLACE_WITH_COMMA_SEPARATED_RECIPIENT_NUMBERS",
+        "TWILIO_WEBHOOK_URL": "REPLACE_WITH_YOUR_WEBHOOK_URL_OR_REMOVE_IF_NOT_NEEDED"
+      }
+    }
+  },
+  "modules": [
+    {
+      "name": "yolov8n-pose",
+      "type": "registry",
+      "module_id": "rig-guardian:yolov8n-pose:yolov8n-pose",
+      "version": "latest"
+    }
+  ],
+  "services": [
+    {
+      "name": "yolov8-pose-detector",
+      "type": "vision",
+      "namespace": "rdk",
+      "model": "rig-guardian:yolov8n-pose:yolov8n-pose",
+      "attributes": {
+        "model_location": "/home/sunil/yolov8n-pose.pt",
+        "pose_classifier_path": "/home/sunil/yolov8n-pose/pose_classifier.joblib",
+        
+        "_comment_security": "🔒 Twilio credentials are securely loaded from environment variables via agent.advanced_settings.viam_server_env",
+        "_comment_usage": "Set use_env_for_twilio=true to enable environment variable loading (defaults to true if TWILIO_ACCOUNT_SID env var exists)",
+        "use_env_for_twilio": true,
+        
+        "_comment_alert_settings": "Fall Detection Alert Settings - these are non-sensitive so can remain in config",
+        "fall_confidence_threshold": 0.7,
+        "alert_cooldown_seconds": 300
+      }
+    }
+  ],
+  "components": [
+    {
+      "name": "camera",
+      "type": "camera", 
+      "namespace": "rdk",
+      "model": "webcam",
+      "attributes": {
+        "video_path": "0"
+      }
+    }
+  ]
+}

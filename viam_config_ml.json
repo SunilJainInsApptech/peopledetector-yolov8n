@@ -1,0 +1,33 @@
+{
+  "modules": [
+    {
+      "name": "yolov8n-pose",
+      "type": "registry",
+      "module_id": "rig-guardian:yolov8n-pose:yolov8n-pose",
+      "version": "latest"
+    }
+  ],
+  "services": [
+    {
+      "name": "yolov8-pose-detector",
+      "type": "vision",
+      "namespace": "rdk",
+      "model": "rig-guardian:yolov8n-pose:yolov8n-pose",
+      "attributes": {
+        "model_location": "yolov8n-pose.pt",
+        "pose_classifier_path": "/home/sunil/yolov8n-pose/pose_classifier.joblib"
+      }
+    }
+  ],
+  "components": [
+    {
+      "name": "camera",
+      "type": "camera", 
+      "namespace": "rdk",
+      "model": "webcam",
+      "attributes": {
+        "video_path": "0"
+      }
+    }
+  ]
+}
